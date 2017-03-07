@@ -28,11 +28,11 @@ from __future__ import absolute_import, print_function
 
 import copy
 import uuid
+
 from functools import partial, wraps
 
 from elasticsearch.exceptions import RequestError
-from flask import Blueprint, abort, current_app, jsonify, make_response, \
-    request, url_for
+from flask import Blueprint, abort, current_app, jsonify, make_response, request, url_for
 from flask.views import MethodView
 from flask_babelex import gettext as _
 from invenio_db import db
@@ -48,10 +48,7 @@ from jsonpatch import JsonPatchException, JsonPointerException
 from jsonschema.exceptions import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
-from .errors import InvalidDataRESTError, InvalidQueryRESTError, \
-    MaxResultWindowRESTError, PatchJSONFailureRESTError, PIDResolveRESTError, \
-    SuggestMissingContextRESTError, SuggestNoCompletionsRESTError, \
-    UnsupportedMediaRESTError
+from .errors import InvalidDataRESTError, InvalidQueryRESTError, MaxResultWindowRESTError, PIDResolveRESTError, PatchJSONFailureRESTError, SuggestMissingContextRESTError, SuggestNoCompletionsRESTError, UnsupportedMediaRESTError
 from .links import default_links_factory
 from .proxies import current_records_rest
 from .query import default_search_factory
@@ -74,7 +71,7 @@ def create_error_handlers(blueprint):
     @blueprint.errorhandler(ValidationError)
     def validation_error(error):
         """Catch validation errors."""
-        return RESTValidationError().get_response()
+        return RESTValidationError(error=error).get_response()
 
     @blueprint.errorhandler(RequestError)
     def elasticsearch_badrequest_error(error):
